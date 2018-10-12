@@ -28,43 +28,29 @@ let count = 0;
 app.get('/checkout/:id', (req, res) => {
 
   client.get(req.params.id, (error, results) => {
+
+    if (error) {
+      console.log('ERROR', error)
+    }
+
     if (results !== null) {
       res.send(JSON.parse(results))
     } else {
+
       axios.get(serverCluster[count % 3] + req.params.id)
       .then(function({ data }) {
-        client.setex(req.params.id, 1000000, JSON.stringify(response.data));
+        // console.log(data)
+        client.setex(req.params.id, 1000000, JSON.stringify(data));
         count++
         res.send(data);
       })
       .catch(function(error) {
-        res.send(error);
+        res.send('ERROR');
       })
       }
     })
 
 
-  // client.get(req.params.id, (error, results) => {
-  //
-  //   if (results !== null) {
-  //     res.send(JSON.parse(results))
-  //   } else {
-  //
-  //     //get request to load balancer
-  //
-  //     app.get('load-balancer-2-864280534.us-west-1.elb.amazonaws.com/?=:id', (error, results) => {
-  //       if (error) {
-  //         console.error(error)
-  //       } else {
-  //
-  //       }
-  //     })
-  //
-  //     client.setex(req.params.id, 1000000, JSON.stringify(result));
-  //     res.send(result);
-  //
-  //   }
-  // })
 })
 
 app.get('/loaderio-aeda5d5017132ef5233d323fdea1967b.txt', (req, res) => {
