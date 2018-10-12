@@ -69,8 +69,8 @@ app.get('/checkout/:id', (req, res) => {
   // })
 })
 
-app.get('/loaderio-f1add894f148e948cc65b45c3070f581.txt', (req, res) => {
-  res.send('loaderio-f1add894f148e948cc65b45c3070f581')
+app.get('/loaderio-aeda5d5017132ef5233d323fdea1967b.txt', (req, res) => {
+  res.send('loaderio-aeda5d5017132ef5233d323fdea1967b')
 })
 
 app.listen(3005, () => console.log('Listening on port 3005...'));
