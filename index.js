@@ -36,18 +36,15 @@ app.get('/checkout/:id', (req, res) => {
   //     }
   //   })
 
-console.log(serverCluster[count % 3])
   axios.get(serverCluster[count % 3] + req.params.id)
     .then(function({ data }) {
       // client.setex(req.params.id, 1000000, JSON.stringify(response.data));
-      console.log(data)
       count++
       res.send(data);
     })
     .catch(function(error) {
       res.send(error);
     })
-
 
   // client.get(req.params.id, (error, results) => {
   //
@@ -67,7 +64,6 @@ console.log(serverCluster[count % 3])
   //
   //     client.setex(req.params.id, 1000000, JSON.stringify(result));
   //     res.send(result);
-  //
   //
   //   }
   // })
