@@ -7,15 +7,15 @@ const bodyParser = require('body-parser')
 
 const app = express();
 
-// let client = redis.createClient();
-//
-// client.on('connect', function(error) {
-//   if (error) {
-//     console.log('ERROR connecting to redis')
-//   } else {
-//     console.log('Connected to redis...')
-//   }
-// });
+let client = redis.createClient();
+
+client.on('connect', function(error) {
+  if (error) {
+    console.log('ERROR connecting to redis')
+  } else {
+    console.log('Connected to redis...')
+  }
+});
 
 app.use(express.static('./client/dist'));
 
@@ -27,24 +27,22 @@ let count = 0;
 
 app.get('/checkout/:id', (req, res) => {
 
-  // client.get(req.params.id, (error, results) => {
-  //
-  //   if (results !== null) {
-  //     res.send(JSON.parse(results))
-  //   } else {
-  //
-  //     }
-  //   })
+  client.get(req.params.id, (error, results) => {
+    if (results !== null) {
+      res.send(JSON.parse(results))
+    } else {
+      axios.get(serverCluster[count % 3] + req.params.id)
+      .then(function({ data }) {
+        client.setex(req.params.id, 1000000, JSON.stringify(response.data));
+        count++
+        res.send(data);
+      })
+      .catch(function(error) {
+        res.send(error);
+      })
+      }
+    })
 
-  axios.get(serverCluster[count % 3] + req.params.id)
-    .then(function({ data }) {
-      // client.setex(req.params.id, 1000000, JSON.stringify(response.data));
-      count++
-      res.send(data);
-    })
-    .catch(function(error) {
-      res.send(error);
-    })
 
   // client.get(req.params.id, (error, results) => {
   //
